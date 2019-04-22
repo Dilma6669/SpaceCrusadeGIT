@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: bdce7c4ac8501fd42ad82f69e0109a05
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _locationManager: {instanceID: 0}
+  - _flagToSayIsMine: {instanceID: 0}
+  - _activePanel: {instanceID: 0}
+  - _panelScriptChild: {instanceID: 0}
+  - _pathFindingPrefab: {fileID: 1965883560703006, guid: d3bfd96356f2f0c4fa8f7cbe953ef5fb,
+      type: 2}
+  - _pathFindingNode: {instanceID: 0}
+  - _parentPathFinding: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
