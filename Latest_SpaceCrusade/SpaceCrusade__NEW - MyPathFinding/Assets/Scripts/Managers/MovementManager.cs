@@ -25,26 +25,21 @@ public class MovementManager : MonoBehaviour
     ////////////////////////////////////////////////
     ////////////////////////////////////////////////
 
-    // this is now being done on sevrer and return a list of vector3 to make node visual display for path for client 
-    public static int[] SetUnitsPath(GameObject objToMove, Vector3 start, Vector3 end)
+    public static List<Vector3> SetUnitsPath(UnitScript unitScript, Vector3 start, Vector3 end)
     {
-        UnitScript unitScript = objToMove.GetComponent<UnitScript>();
+        print("SetUnitsPath start >> " + start + " >>>>>> " + end);
 
         List<Vector3> path = PathFinding.FindPath(unitScript, start, end);
 
-        if (path == null) { return null; }
+        if (path == null) { print("path == null");  return null; }
 
-        // need to work out unit rotations here (if nessacary) default making it zero
+        print("SetUnitsPath path start >> " + start + " >>>>>> " + path[path.Count - 1]);
 
-        List<KeyValuePair<Vector3, Vector3>> posRot = new List<KeyValuePair<Vector3, Vector3>>();
-        foreach(Vector3 pathVect in path)
+        foreach (Vector3 vect in path)
         {
-              posRot.Add(new KeyValuePair<Vector3, Vector3>(pathVect, Vector3.zero));
+            LocationManager.SendCubeDataToSERVER_CLIENT(vect);
         }
-
-        objToMove.GetComponent<MovementScript>().MoveUnit(posRot);
-        int[] movePath = DataManipulation.ConvertVectorsIntoIntArray(path);
-        return movePath; // only need position not rotation for pathFinding nodes
+        return path;
     }
 
 
@@ -53,31 +48,29 @@ public class MovementManager : MonoBehaviour
 
 	}
 
-    public static void CreatePathFindingNodes(GameObject unit, int unitNetID, int[] path)
+    public static void CreatePathFindingNodes_CLIENT(UnitScript unitScript, int unitNetID, List<Vector3> path)
     {
-        unit.GetComponent<UnitScript>().ClearPathFindingNodes();
-
-        List<Vector3> vects = DataManipulation.ConvertIntArrayIntoVectors(path);
+        unitScript.ClearPathFindingNodes();
 
         List<CubeLocationScript> scriptList = new List<CubeLocationScript>();
 
-        foreach(Vector3 vect in vects)
+        foreach(Vector3 vect in path)
         {
-            CubeLocationScript script = LocationManager.GetLocationScript(vect);
-            script.CreatePathFindingNode(unitNetID);
+            CubeLocationScript script = LocationManager.GetLocationScript_CLIENT(vect);
+            script.CreatePathFindingNodeInCube(unitNetID);
             scriptList.Add(script);
-            //Debug.Log("pathfinding VISUAL node set at vect: " + vect);
+            Debug.Log("pathfinding VISUAL node set at vect: " + vect);
         }
 
-        unit.GetComponent<UnitScript>().AssignPathFindingNodes(scriptList);
+        unitScript.AssignPathFindingNodes(scriptList);
     }
 
     ////////////////////////////////////////////////
 
-    public static void MoveMapNode(Vector3 nodeID, KeyValuePair<Vector3, Vector3> posRot)
+    public static void MoveMapNode_SERVER(Vector3 nodeID, KeyValuePair<Vector3, Vector3> posRot)
     {
-        Debug.Log("Moving Map node");
-        BaseNode nodeScript = LocationManager.GetNodeLocationScript(nodeID);
+        //Debug.Log("Moving Map node");
+        BaseNode nodeScript = LocationManager.GetNodeLocationScript_SERVER(nodeID);
 
         nodeScript.MoveNode(posRot);
     }

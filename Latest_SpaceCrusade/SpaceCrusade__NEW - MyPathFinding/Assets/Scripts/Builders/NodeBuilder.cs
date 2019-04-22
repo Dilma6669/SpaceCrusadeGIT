@@ -13,6 +13,7 @@ public class NodeBuilder : MonoBehaviour
     public GameObject _worldNodePrefab; // object that shows Map nodes
     public GameObject _mapNodePrefab; // object that shows Map nodes
     public GameObject _connectorNodePrefab; // object that shows Map nodes
+    public GameObject _pathFindingPrefab; // strangely for pathfinding 
 
     public GameObject _normalCoverPrefab;
     public GameObject _openCoverPrefab;
@@ -42,6 +43,7 @@ public class NodeBuilder : MonoBehaviour
         if (_worldNodePrefab == null) { Debug.LogError("OOPSALA we have an ERROR!"); }
         if (_mapNodePrefab == null) { Debug.LogError("OOPSALA we have an ERROR!"); }
         if (_connectorNodePrefab == null) { Debug.LogError("OOPSALA we have an ERROR!"); }
+        if (_pathFindingPrefab == null) { Debug.LogError("OOPSALA we have an ERROR!"); }
 
         if (_normalCoverPrefab == null) { Debug.LogError("OOPSALA we have an ERROR!"); }
         if (_openCoverPrefab == null) { Debug.LogError("OOPSALA we have an ERROR!"); }
@@ -116,6 +118,8 @@ public class NodeBuilder : MonoBehaviour
                 return _mapNodePrefab;
             case NodeTypes.ConnectorNode:
                 return _connectorNodePrefab;
+            case NodeTypes.PathFindingNode:
+                return _pathFindingPrefab;
             default:
                 Debug.Log("OPPSALA WE HAVE AN ISSUE HERE");
                 return null;
@@ -162,6 +166,7 @@ public class NodeBuilder : MonoBehaviour
         ship.transform.SetParent(parent);
     }
 
+    ////////////////////////////////////////////////
 
     public GameObject CreatePanelObject(string panelName, Transform parent)
     {
@@ -171,13 +176,22 @@ public class NodeBuilder : MonoBehaviour
         PanelPieceScript panelScript = panelObject.gameObject.GetComponent<PanelPieceScript>();
         CubeLocationScript cubeScript = parent.gameObject.GetComponent<CubeLocationScript>();
         cubeScript._panelScriptChild = panelScript;
-        cubeScript._isPanel = true;
+        cubeScript.CubeIsPanel = true;
         panelObject.name = (panelName);
 
         panelScript.cubeScriptParent = cubeScript;
         panelScript._camera = CameraManager.Camera_Agent._camera;
 
         return panelObject;
+    }
+
+    ////////////////////////////////////////////////
+
+    public GameObject CreatePathFindingNode(Transform parent, int unitID)
+    {
+        GameObject nodeObject = InstantiateNodeObject(Vector3.zero, NodeTypes.PathFindingNode, parent);
+        nodeObject.GetComponent<PathFindingNode>().UnitControllerID = unitID;
+        return nodeObject;
     }
 
     ////////////////////////////////////////////////

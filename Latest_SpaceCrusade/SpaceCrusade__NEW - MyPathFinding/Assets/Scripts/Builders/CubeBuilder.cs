@@ -28,6 +28,7 @@ public class CubeBuilder : MonoBehaviour {
     {
         GameObject cubeObject = WorldBuilder._nodeBuilder.CreateDefaultCube(gridLoc, rotations, nodeLayerCount, parent);
         CubeLocationScript cubeScript = cubeObject.GetComponent<CubeLocationScript>();
+        //cubeScript.CubeAngle = cubeType;
 
         switch (cubeType)
         {
@@ -79,11 +80,11 @@ public class CubeBuilder : MonoBehaviour {
         // If cube is movable or not
         if (cubeScript.CubeMoveable)
         {
-          LocationManager.SetCubeScriptToLocation(GridLoc, cubeScript);
+          LocationManager.SetCubeScriptToLocation_CLIENT(GridLoc, cubeScript);
         }
         else
         {
-            LocationManager.SetCubeScriptToHalfLocation(GridLoc, cubeScript);
+            LocationManager.SetCubeScriptToHalfLocation_CLIENT(GridLoc, cubeScript);
         }
 
         // for layering system

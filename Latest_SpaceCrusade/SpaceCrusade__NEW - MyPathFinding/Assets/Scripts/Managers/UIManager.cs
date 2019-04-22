@@ -51,6 +51,8 @@ public class UIManager : MonoBehaviour
         playerNameText.text = PlayerManager.PlayerName;
 
         SyncedVars _syncedVars = GameObject.Find("SyncedVars").GetComponent<SyncedVars>(); // needs to be here, function runs before awake
+        if (_syncedVars == null) { Debug.LogError("We got a problem here"); }
+
         seedNumText.text = _syncedVars.GlobalSeed.ToString();
     }
 

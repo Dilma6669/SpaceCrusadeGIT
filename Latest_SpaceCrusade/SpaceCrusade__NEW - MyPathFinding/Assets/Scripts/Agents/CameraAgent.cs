@@ -5,19 +5,14 @@ public class CameraAgent : NetworkBehaviour
 {
     ////////////////////////////////////////////////
 
-    [HideInInspector]
     public Transform _cameraPivot;
-    [HideInInspector]
     public Transform _cameraObject;
-    [HideInInspector]
     public Camera _camera;
+
     [HideInInspector]
     public CameraPivot _cameraPivotScript;
 
-
     ////////////////////////////////////////////////
-
-    private Transform _unitPivot; // pivot on unit
 
     private Transform _cameraPivotTransform;
     private Transform cameraTransform;
@@ -27,9 +22,15 @@ public class CameraAgent : NetworkBehaviour
 
     void Awake()
     {
-        _cameraPivot = GameObject.Find("CameraPivot").transform;
-        _cameraObject = GameObject.Find("CameraObject").transform;
+        _cameraPivot = transform.Find("CameraPivot");
+        if (_cameraPivot == null) { Debug.LogError("We got a problem here");}
+
+        _cameraObject = transform.FindDeepChild("CameraObject");
+        if (_cameraObject == null) { Debug.LogError("We got a problem here");}
+
         _camera = _cameraObject.GetComponent<Camera>();
+        if (_camera == null) { Debug.LogError("We got a problem here"); }
+
         _cameraPivotScript = _cameraPivot.GetComponent<CameraPivot>();
         _camera.enabled = false;
     }
@@ -45,13 +46,15 @@ public class CameraAgent : NetworkBehaviour
 
 
 
-    public void SetCamToOrbitUnit(Transform unit)
+    public void SetCamAgentToOrbitUnit(UnitScript unitScript)
     {
-        _unitPivot = unit.GetComponent<UnitScript>().PlayerPivot;
-        _cameraPivot.transform.SetParent(_unitPivot);
-        _cameraPivot.transform.localPosition = Vector3.zero;
+        if (!isLocalPlayer) return;
 
-        _cameraPivotScript._unitOrbitCamEnable = true;
+        if (unitScript.PlayerPivot == null)
+        {
+            print("ERROR UnitScript.PlayerPivot == null unitScript.NetID.Value: " + unitScript.NetID.Value);
+        }
+        _cameraPivotScript.SetNewPivot(unitScript.PlayerPivot);
     }
 
     ////////////////////////////////////////////////

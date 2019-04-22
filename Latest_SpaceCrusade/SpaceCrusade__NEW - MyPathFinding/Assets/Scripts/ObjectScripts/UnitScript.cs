@@ -12,7 +12,7 @@ public class UnitScript : NetworkBehaviour
     // Visual
     private Renderer[] _rends;
     // for the player+camera to pivot around
-    private Transform _playerPivot;
+    GameObject _playerPivot;
 
     // Unit stats
     private int _unitModel;
@@ -21,7 +21,10 @@ public class UnitScript : NetworkBehaviour
     private Vector3 _startingWorldLoc;
     private int _playerControllerId;
     private NetworkInstanceId _netID;
+    private Vector3 _nodeIDUnitIsOn;
     public CubeLocationScript _cubeUnitIsOn;
+
+
 
     UnitData _unitData;
 
@@ -73,9 +76,16 @@ public class UnitScript : NetworkBehaviour
         set { _unitData = value; }
     }
 
-    public Transform PlayerPivot
+    public GameObject PlayerPivot
     {
         get { return _playerPivot; }
+        set { _playerPivot = value; }
+    }
+
+    public Vector3 NodeID_UnitIsOn
+    {
+        get { return _nodeIDUnitIsOn; }
+        set { _nodeIDUnitIsOn = value; }
     }
 
     ////////////////////////////////////////////////
@@ -83,15 +93,18 @@ public class UnitScript : NetworkBehaviour
 
     void Awake()
     {
+        _pathFindingNodes = new List<CubeLocationScript>();
+        _rends = GetComponentsInChildren<Renderer>();
+        PlayerPivot = transform.Find("Player_Pivot").gameObject;
 
+        if (_pathFindingNodes == null) { Debug.LogError("We got a problem here"); }
+        if (_rends == null) { Debug.LogError("We got a problem here"); }
+        if (PlayerPivot == null) { Debug.LogError("We got a problem here"); }
     }
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
-        _pathFindingNodes = new List<CubeLocationScript>();
-        _rends = GetComponentsInChildren<Renderer> ();
-        _playerPivot = GameObject.Find("Player_Pivot").transform;
     }
 
     ////////////////////////////////////////////////
@@ -99,7 +112,11 @@ public class UnitScript : NetworkBehaviour
 
     public void PanelPieceChangeColor(string color) {
 
-		foreach (Renderer rend in _rends) {
+        if (_rends == null) {
+            _rends = GetComponentsInChildren<Renderer>();
+        }
+
+        foreach (Renderer rend in _rends) {
 			switch (color) {
 			case "Red":
 				rend.material.color = Color.red;
@@ -120,54 +137,43 @@ public class UnitScript : NetworkBehaviour
 	}
 
 
+    public void ActivateUnit()
+    {
+        PanelPieceChangeColor("Red");
+        _unitActive = true;
+    }
 
 
-	public void ActivateUnit(bool onOff) {
-
-        if (onOff)
-        {
-            UnitsManager.SetUnitActive(true, this);
-            PanelPieceChangeColor("Red");
-        }
-        else
-        {
-            UnitsManager.SetUnitActive(false);
-            PanelPieceChangeColor("White");
-        }
-        _unitActive = onOff;
+    public void DeActivateUnit()
+    {
+        PanelPieceChangeColor("White");
+        _unitActive = false;
     }
 
 
     void OnMouseDown()
     {
-        //if (!isLocalPlayer) return;
         if (PlayerControllerID == PlayerManager.PlayerID)
         {
             if (!_unitActive)
             {
-                ActivateUnit(true);
-            }
-            else
-            {
-                ActivateUnit(false);
+                ActivateUnit();
+                UnitsManager.SetUnitActive(true, PlayerControllerID, (int)NetID.Value);
+                UnitsManager.AssignCameraToActiveUnit();
             }
         }
 	}
 
 	void OnMouseOver() {
-		if (!_unitActive) {
-		//	if (cubeScript.cubeVisible) {
+		if (!_unitActive)
+        {
 			PanelPieceChangeColor ("Green");
-		//		cubeScript.CubeHighlight ("Move");
-		//	}
 		}
 	}
 	void OnMouseExit() {
-		if (!_unitActive) {
-	//	if (cubeScript.cubeVisible) {
+		if (!_unitActive)
+        {
 			PanelPieceChangeColor ("White");
-	//		cubeScript.CubeUnHighlight ("Move");
-	//	}
 		}
 	}
 

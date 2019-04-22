@@ -127,6 +127,14 @@ public class LayerManager : MonoBehaviour
         }
 
         LayerCurr = layerID;
+
+
+        // for the units
+        UnitScript[] units = parentNode.GetComponentsInChildren<UnitScript>();
+        foreach (UnitScript unit in units)
+        {
+           AssignUnitToLayer(unit.gameObject);
+        }
     }
 
 
@@ -141,18 +149,7 @@ public class LayerManager : MonoBehaviour
         foreach (Transform child in allChildren)
         {
             child.gameObject.layer = visibilityLayer;
-
-            if (child.GetComponent<UnitScript>()) // for the units
-            {
-                units.Add(child.gameObject);
-            }
         }
-
-        foreach(GameObject unit in units)
-        {
-            AssignUnitToLayer(unit);
-        }
-
     }
 
     public static void ChangeSpecificCubesVisibility(int visibilityLayer)
@@ -295,6 +292,10 @@ public class LayerManager : MonoBehaviour
     {
         int playerID = PlayerManager.PlayerID;
         int unitControllerID = unit.GetComponent<UnitScript>().PlayerControllerID;
+
+        print("fuck AssignUnitToLayer playerID: " + playerID);
+        print("fuck AssignUnitToLayer unitControllerID: " + unitControllerID);
+
 
         if (playerID == unitControllerID)
         {

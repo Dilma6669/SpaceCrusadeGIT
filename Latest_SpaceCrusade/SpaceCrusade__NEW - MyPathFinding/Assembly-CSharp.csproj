@@ -61,7 +61,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CameraPivot.cs" />
     <Compile Include="Assets\Data\ConnectorData\ConnectorPiece_01.cs" />
     <Compile Include="Assets\Data\ConnectorData\ConnectorPiece_Roof_01.cs" />
     <Compile Include="Assets\Data\Enums\CoverTypes.cs" />
@@ -127,7 +126,10 @@
     <Compile Include="Assets\Scripts\Nodes\NodeCover.cs" />
     <Compile Include="Assets\Scripts\Nodes\PathFindingNode.cs" />
     <Compile Include="Assets\Scripts\Nodes\WorldNode.cs" />
+    <Compile Include="Assets\Scripts\ObjectScripts\CameraPivot.cs" />
     <Compile Include="Assets\Scripts\ObjectScripts\CubeConnections.cs" />
+    <Compile Include="Assets\Scripts\ObjectScripts\CubeLocation_SERVER.cs" />
+    <Compile Include="Assets\Scripts\ObjectScripts\CubeLocationBase.cs" />
     <Compile Include="Assets\Scripts\ObjectScripts\CubeLocationScript.cs" />
     <Compile Include="Assets\Scripts\ObjectScripts\MovementScript.cs" />
     <Compile Include="Assets\Scripts\ObjectScripts\PanelPieceScript.cs" />
@@ -142,19 +144,19 @@
     <Compile Include="Assets\Scripts\Tools\FramesPerSecond.cs" />
     <Compile Include="Assets\Scripts\Tools\TransformDeepChildExtension.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/Made Games/Latest_SpaceCrusade_Git/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>D:/Made Games/SpaceCrusadeGIT_NEWEST/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>D:/Made Games/Latest_SpaceCrusade_Git/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>D:/Made Games/SpaceCrusadeGIT_NEWEST/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>D:/Made Games/Latest_SpaceCrusade_Git/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>D:/Made Games/SpaceCrusadeGIT_NEWEST/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/Made Games/Latest_SpaceCrusade_Git/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>D:/Made Games/SpaceCrusadeGIT_NEWEST/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>D:/Made Games/Latest_SpaceCrusade_Git/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+      <HintPath>D:/Made Games/SpaceCrusadeGIT_NEWEST/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>D:/Programs/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -358,13 +360,13 @@
       <HintPath>D:/Programs/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-      <HintPath>D:/Made Games/Latest_SpaceCrusade_Git/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
+      <HintPath>D:/Made Games/SpaceCrusadeGIT_NEWEST/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>D:/Made Games/Latest_SpaceCrusade_Git/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>D:/Made Games/SpaceCrusadeGIT_NEWEST/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>D:/Made Games/Latest_SpaceCrusade_Git/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
+      <HintPath>D:/Made Games/SpaceCrusadeGIT_NEWEST/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>D:/Programs/Unity/Editor/Data/MonoBleedingEdge/lib/mono/unity/mscorlib.dll</HintPath>

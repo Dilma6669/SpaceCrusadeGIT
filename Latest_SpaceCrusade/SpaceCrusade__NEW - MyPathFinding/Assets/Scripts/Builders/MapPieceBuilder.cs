@@ -222,13 +222,14 @@ public class MapPieceBuilder : MonoBehaviour {
                     GridLoc = new Vector3(objectsCountX, objectsCountY, objectsCountZ);
 
                     int cubeType = floor[z, x];
+
                     cubeType = FigureOutDoors(node, _mapType, cubeType, rotations);
                     int nodeLayercount = node.GetComponent<T>().NodeLayerCount + nodeLayerCounter;
-    
+
                     CubeLocationScript cubeScript = CubeBuilder.CreateCubeObject(GridLoc, cubeType, rotations, nodeLayercount, node.gameObject.transform); // Create the cube
-                    
+
                     // A test to see if cube has panel to try make connecting neighbours easier
-                    if (cubeScript && cubeScript._isPanel)
+                    if (cubeScript && cubeScript.CubeIsPanel)
                     {
                         halfCubesWithPanels.Add(cubeScript);
                     }

@@ -28,7 +28,7 @@ public class WorldBuilder : MonoBehaviour
 
     void Start()
     {
-        _nodeBuilder = GameObject.Find("NodeBuilder").GetComponent<NodeBuilder>();
+        _nodeBuilder = transform.Find("NodeBuilder").GetComponent<NodeBuilder>();
     }
 
     ////////////////////////////////////////////////

@@ -6,33 +6,36 @@ public class CubeLocationScript : MonoBehaviour {
 
     // Cube info
     int _cubeUniqueID;
-    public Vector3 _cubeStaticLoc;
-    public int _cubeAngle;
-    public int _cubeLayerID;
-    public bool _cubeMovable; // this is all movable cubes everywhere, including in the air
-    public bool _cubePlatform; // this is all movable cubes only with panels to walk on, not in air
+    Vector3 _cubeStaticLoc;
+    int _cubeType;
+    int _cubeAngle;
+    int _cubeLayerID;
+    bool _cubeMovable; // this is all movable cubes everywhere, including in the air
+    bool _cubePlatform; // this is all movable cubes only with panels to walk on, not in air
+    bool _cubeIsSlope;
+    bool _cubeIsPanel;
 
     bool _cubeVisible;
     bool _cubSelected;
-    public bool _cubeOccupied; // If a guy is on square
-    public MovementScript _flagToSayIsMine;
+    bool _cubeOccupied; // If a guy is on square
 
-    public bool _isHumanWalkable;
-    public bool _isHumanClimbable;
-    public bool _isHumanJumpable;
-    public bool _isAlienWalkable;
-    public bool _isAlienClimbable;
-    public bool _isAlienJumpable;
+    bool _isHumanWalkable;
+    bool _isHumanClimbable;
+    bool _isHumanJumpable;
+    bool _isAlienWalkable;
+    bool _isAlienClimbable;
+    bool _isAlienJumpable;
 
-    public bool _isSlope = false;
+    // All Checks combined into two bools
+    bool _isHumanMoveable;
+    bool _isAlienMoveable;
 
     // panel objects
-    public bool _isPanel = false;
+    int _panelChildAngle;
     public GameObject _activePanel;
     public PanelPieceScript _panelScriptChild = null;
 
     // Pathfinding
-    public GameObject _pathFindingPrefab;
     public GameObject _pathFindingNode;
     public CubeLocationScript _parentPathFinding; //important
     public int fCost;
@@ -70,6 +73,12 @@ public class CubeLocationScript : MonoBehaviour {
         set { _cubePlatform = value; }
     }
 
+    public int CubeType
+    {
+        get { return _cubeType; }
+        set { _cubeType = value; }
+    }
+
     public int CubeAngle
     {
         get { return _cubeAngle; }
@@ -94,11 +103,18 @@ public class CubeLocationScript : MonoBehaviour {
         set { _cubeOccupied = value; }
     }
 
-    public MovementScript FlagToSayIsMine
+    public bool CubeIsSlope
     {
-        get { return _flagToSayIsMine; }
-        set { _flagToSayIsMine = value; }
+        get { return _cubeIsSlope; }
+        set { _cubeIsSlope = value; }
     }
+
+    public bool CubeIsPanel
+    {
+        get { return _cubeIsPanel; }
+        set { _cubeIsPanel = value; }
+    }
+
 
     public int CubeLayerID
     {
@@ -139,6 +155,26 @@ public class CubeLocationScript : MonoBehaviour {
         set { _isAlienJumpable = value; }
     }
 
+    public bool IS_HUMAN_MOVABLE
+    {
+        get { return _isHumanMoveable; }
+        set { _isHumanMoveable = value; }
+    }
+    public bool IS_ALIEN_MOVABLE
+    {
+        get { return _isAlienMoveable; }
+        set { _isAlienMoveable = value; }
+    }
+
+
+
+    public int PanelChildAngle
+    {
+        get { return _panelChildAngle; }
+        set { _panelChildAngle = value; }
+    }
+
+
     // Neighbours
     public bool NeighboursSet
     {
@@ -166,13 +202,19 @@ public class CubeLocationScript : MonoBehaviour {
         CubeOccupied = false;
         CubeMoveable = false;
         CubePlatform = false;
+        CubeIsSlope = false;
 
         IsHumanWalkable = false;
         IsHumanClimbable = false;
         IsHumanJumpable = false;
+
         IsAlienWalkable = false;
         IsAlienClimbable = false;
         IsAlienJumpable = false;
+
+        IS_HUMAN_MOVABLE = false;
+        IS_ALIEN_MOVABLE = false;
+
         CubeStaticLocVector = new Vector3(-1, -1, -1);
     }
 
@@ -211,12 +253,12 @@ public class CubeLocationScript : MonoBehaviour {
 		if (onOff) {
 			CubeActive (true);
 			_activePanel = panelSelected;
-            LocationManager.SetCubeActive (true, new KeyValuePair<Vector3, Vector3>(CubeStaticLocVector, Vector3.zero)); // not sure if this should be here yet
+            LocationManager.SetCubeActive_CLIENT(true, CubeStaticLocVector); // not sure if this should be here yet
         }
         else
         {
 			CubeActive (false);
-            LocationManager.SetCubeActive (false, new KeyValuePair<Vector3, Vector3>(Vector3.zero, Vector3.zero));
+            LocationManager.SetCubeActive_CLIENT(false, Vector3.zero);
 		}
 	}
 
@@ -316,6 +358,17 @@ public class CubeLocationScript : MonoBehaviour {
         }
     }
 
+    // data for the server
+    public bool[] GetCubeData()
+    {
+        bool[] data = new bool[2];
+
+        data[0] = IS_HUMAN_MOVABLE;
+        data[1] = IS_ALIEN_MOVABLE;
+
+        return data;
+    }
+
 
     public void ResetPathFindingValues()
     {
@@ -327,12 +380,10 @@ public class CubeLocationScript : MonoBehaviour {
     }
 
 
-	public void CreatePathFindingNode(int unitID) {
-        GameObject nodeObject = Instantiate (_pathFindingPrefab, transform, false); // empty cube
-		nodeObject.transform.SetParent (transform);
-		nodeObject.transform.position = transform.position;
-        _pathFindingNode = nodeObject;
-        _pathFindingNode.GetComponent<PathFindingNode>().UnitControllerID = unitID;
+	public void CreatePathFindingNodeInCube(int unitID) {
+        _pathFindingNode = WorldBuilder._nodeBuilder.CreatePathFindingNode(transform, unitID);
+        _pathFindingNode.transform.position = transform.position;
+        _pathFindingNode.transform.localScale = new Vector3(10, 10, 10);
     }
 
     public void DestroyPathFindingNode()

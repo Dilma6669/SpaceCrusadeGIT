@@ -37,16 +37,27 @@ public class GameManager : MonoBehaviour {
 
     void Start()
     {
-        _WorldManager       = GameObject.Find("WorldManager");
-        _PlayerManager      = GameObject.Find("PlayerManager");
-        _LocationManager    = GameObject.Find("LocationManager");
-        _MovementManager    = GameObject.Find("MovementManager");
-        _CombatManager      = GameObject.Find("CombatManager");
-        _CameraManager      = GameObject.Find("CameraManager");
-        _UIManager          = GameObject.Find("UIManager");
-        _NetworkManager     = GameObject.Find("NetworkManager");
-        _UnitsManager       = GameObject.Find("UnitsManager");
-        _LayerManager       = GameObject.Find("LayerManager");
+        _WorldManager       = transform.Find("WorldManager").gameObject;
+        _PlayerManager      = transform.Find("PlayerManager").gameObject;
+        _LocationManager    = transform.Find("LocationManager").gameObject;
+        _MovementManager    = transform.Find("MovementManager").gameObject;
+        _CombatManager      = transform.Find("CombatManager").gameObject;
+        _CameraManager      = transform.Find("CameraManager").gameObject;
+        _UIManager          = transform.Find("UIManager").gameObject;
+        _NetworkManager     = transform.Find("NetworkManager").gameObject;
+        _UnitsManager       = transform.Find("UnitsManager").gameObject;
+        _LayerManager       = transform.Find("LayerManager").gameObject;
+
+        if (_WorldManager == null)      { Debug.LogError("We got a problem here"); }
+        if (_PlayerManager == null)     { Debug.LogError("We got a problem here"); }
+        if (_LocationManager == null)   { Debug.LogError("We got a problem here"); }
+        if (_MovementManager == null)   { Debug.LogError("We got a problem here"); }
+        if (_CombatManager == null)     { Debug.LogError("We got a problem here"); }
+        if (_CameraManager == null)     { Debug.LogError("We got a problem here"); }
+        if (_UIManager == null)         { Debug.LogError("We got a problem here"); }
+        if (_NetworkManager == null)    { Debug.LogError("We got a problem here"); }
+        if (_UnitsManager == null)      { Debug.LogError("We got a problem here"); }
+        if (_LayerManager == null)      { Debug.LogError("We got a problem here"); }
     }
 
     ////////////////////////////////////////////////

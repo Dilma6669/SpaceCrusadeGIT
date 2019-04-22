@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class MovementScript : MonoBehaviour
@@ -10,22 +9,24 @@ public class MovementScript : MonoBehaviour
 
     private Vector3 _unitCurrPos;
 
-    private List<KeyValuePair<Vector3, Vector3>> _nodes;
+    private List<Vector3> _nodes;
 
-    private KeyValuePair<Vector3, Vector3> _staticFinalTargetVect;
 
-    private KeyValuePair<Vector3, Vector3> _staticTargetVect;
-    private CubeLocationScript _staticTargetScript;
-    private Vector3 _dynamicTargetLocVect;
+    private Vector3 _finalTargetStaticLoc;              // final target
+    private Vector3 _currTargetStaticLoc;               // current target
+    private CubeLocation_SERVER _currTargetScript;      // current target script
+    public Vector3 _currTargetDynamicLoc;               // vector of the moving cube Object
 
-    private bool collision = false;
+    public GameObject _worldNodeObject;
+    public Vector3 _worldNodeDynamicLoc;                // When the node is moving
+    public Vector3 _worldNodeStaticLoc;                 // original position as in when world first loads
 
     private int locCount;
 
     private int _unitsSpeed;
 
     private bool _newPathSet = false;
-    private List<KeyValuePair<Vector3, Vector3>> _newPathNodes;
+    private List<Vector3> _newPathNodes;
 
     private Animator[] _animators;
 
@@ -36,14 +37,14 @@ public class MovementScript : MonoBehaviour
 
     void Awake()
     {
-        unitContainerTransform = GameObject.Find("UnitContainer").transform;
+        unitContainerTransform = transform.Find("UnitContainer");
         _animators = GetComponentsInChildren<Animator>();
     }
 
     void Start()
     {
-        _nodes = new List<KeyValuePair<Vector3, Vector3>>();
-        _newPathNodes = new List<KeyValuePair<Vector3, Vector3>>();
+        _nodes = new List<Vector3>();
+        _newPathNodes = new List<Vector3>();
     }
 
 
@@ -60,15 +61,20 @@ public class MovementScript : MonoBehaviour
     ////////////////////////////////////////////////
     ////////////////////////////////////////////////
 
+    private Vector3 GetWorldNodeMovementVect()
+    {
+        return _worldNodeObject.transform.position - _worldNodeStaticLoc;
+    }
+
     private void StartMoving()
     {
         if (locCount < _nodes.Count)
         {
             _unitCurrPos = unitContainerTransform.position;
 
-            _dynamicTargetLocVect = _staticTargetScript.transform.position;
+            _currTargetDynamicLoc = _currTargetStaticLoc + GetWorldNodeMovementVect();//_targetPathFindingNode.gameObject.transform.position;
 
-            if (_unitCurrPos != _dynamicTargetLocVect)
+            if (_unitCurrPos != _currTargetDynamicLoc)
             {
                 UnitMoveTowardsTarget();
             }
@@ -83,20 +89,18 @@ public class MovementScript : MonoBehaviour
 
     private void UnitMoveTowardsTarget()
     {
-        AnimationManager.SetAnimatorBool(_animators, "Combat_Walk", true);
-
         // Rotation
         Vector3 targetDir = Vector3.zero;
         Vector3 newDir = Vector3.zero;
-        if (_staticTargetVect.Value == Vector3.zero)
-        {
-            targetDir = _dynamicTargetLocVect - _unitCurrPos; // for units (rotates almost straight away)
+        //if (_staticTargetVect == Vector3.zero)
+        //{
+            targetDir = _currTargetDynamicLoc - _unitCurrPos; // for units (rotates almost straight away)
             newDir = Vector3.RotateTowards(unitContainerTransform.forward, targetDir, (Time.deltaTime * 2f) * _unitsSpeed, 0.0f);
-        }
+        //}
         unitContainerTransform.rotation = Quaternion.LookRotation(newDir);
 
         // Moving
-        transform.position = Vector3.MoveTowards(_unitCurrPos, _dynamicTargetLocVect, Time.deltaTime * _unitsSpeed);
+        transform.position = Vector3.MoveTowards(_unitCurrPos, _currTargetDynamicLoc, Time.deltaTime * _unitsSpeed);
     }
 
     ////////////////////////////////////////////////
@@ -128,7 +132,7 @@ public class MovementScript : MonoBehaviour
         Reset();
         _nodes = _newPathNodes;
 
-        _staticFinalTargetVect = _nodes[_nodes.Count - 1];
+        _finalTargetStaticLoc = _nodes[_nodes.Count - 1];
 
         SetNextTarget();
     }
@@ -148,40 +152,43 @@ public class MovementScript : MonoBehaviour
 
     private void SetNextTarget()
     {
-        _staticTargetVect = _nodes[locCount];
-        _staticTargetScript = LocationManager.GetLocationScript(_nodes[locCount].Key);
-
-        if (!LocationManager.SetUnitOnCube(GetComponent<UnitScript>(), _staticTargetVect.Key))
+        _currTargetStaticLoc = _nodes[locCount];
+        _currTargetScript = LocationManager.GetLocationScript_SERVER(_nodes[locCount]);
+       
+        if (!LocationManager.SetUnitOnCube_SERVER(GetComponent<UnitScript>(), _currTargetStaticLoc))
         {
             Debug.LogWarning("units movement interrupted >> recalculating");
             moveInProgress = false;
             Reset();
-            UnitsManager.MakeUnitRecalculateMove(GetComponent<UnitScript>(), _staticFinalTargetVect);
+            NetWorkManager.NetworkAgent.ServerTellClientToFindNewPathForUnit(PlayerManager.PlayerAgent.NetID, _finalTargetStaticLoc);
         }
     }
 
     ////////////////////////////////////////////////
 
-    public void MoveUnit(List<KeyValuePair<Vector3, Vector3>> _posRot)
+    public void MoveUnit(List<Vector3> path)
     {
-        Debug.Log("MoveUnit!");
+        AnimationManager.SetAnimatorBool(_animators, "Combat_Walk", true);
 
         _unitsSpeed = gameObject.transform.GetComponent<UnitScript>().UnitCombatStats[1]; // movement
 
-        if (_posRot.Count > 0)
+        if (path.Count > 0)
         {
-            _staticFinalTargetVect = _posRot[_posRot.Count - 1];
-            _staticTargetScript = LocationManager.GetLocationScript(_posRot[0].Key);
+            _finalTargetStaticLoc = path[path.Count - 1];
+
+            Vector3 nodeVect = gameObject.GetComponent<UnitScript>().NodeID_UnitIsOn;
+            _worldNodeObject = LocationManager.GetNodeLocationScript_SERVER(nodeVect).gameObject;
+            _worldNodeStaticLoc = nodeVect;
 
             if (moveInProgress)
             {
-                _newPathNodes = _posRot;
+                _newPathNodes = path;
                 _newPathSet = true;
             }
             else
             {
                 Reset();
-                _nodes = _posRot;
+                _nodes = path;
                 moveInProgress = true;
                 SetNextTarget();
             }
@@ -193,17 +200,15 @@ public class MovementScript : MonoBehaviour
     private void Reset()
     {
         locCount = 0;
-        _dynamicTargetLocVect = Vector3.zero;
-        _staticTargetVect = new KeyValuePair<Vector3, Vector3>();
-        _staticFinalTargetVect = new KeyValuePair<Vector3, Vector3>();
+        //_dynamicTargetLocVect = Vector3.zero;
+        //_staticTargetVect = new KeyValuePair<Vector3, Vector3>();
+        //_staticFinalTargetVect = new KeyValuePair<Vector3, Vector3>();
         _newPathSet = false;
-        foreach (KeyValuePair<Vector3, Vector3> nodeVect in _nodes)
-        {
-            CubeLocationScript script = LocationManager.GetLocationScript(nodeVect.Key);
-            script.DestroyPathFindingNode();
-        }
+        //foreach (Vector3 nodeVect in _nodes)
+        //{
+        //    CubeLocation_SERVER script = LocationManager.GetLocationScript_SERVER(nodeVect);
+        //    script.DestroyPathFindingNode();
+        //}
         _nodes.Clear();
     }
-
-
 }

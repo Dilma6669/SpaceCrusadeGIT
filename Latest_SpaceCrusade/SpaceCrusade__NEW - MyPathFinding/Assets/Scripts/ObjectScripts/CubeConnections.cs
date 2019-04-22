@@ -33,11 +33,11 @@ public class CubeConnections : MonoBehaviour
         // an attempt to make all sourounding cubes of Slope into movable cubes
         foreach (Vector3 vect in cubeScript.NeighbourVects)
         {
-            CubeLocationScript script = LocationManager.GetLocationScript(vect);
+            CubeLocationScript script = LocationManager.GetLocationScript_CLIENT(vect);
 
             if (script != null)
             {
-                if (script.CubeMoveable && !script._isPanel)
+                if (script.CubeMoveable && !script.CubeIsPanel)
                 {
                     script.SetNeighbourVects();
                     script.CubePlatform = true;
@@ -57,11 +57,11 @@ public class CubeConnections : MonoBehaviour
         foreach (Vector3 vect in cubeHalfScript.NeighbourHalfVects)
         {
             // this will only return valid full cubes, only 2 will come thru, above and below
-            CubeLocationScript cubeScript = LocationManager.GetLocationScript(vect);
+            CubeLocationScript cubeScript = LocationManager.GetLocationScript_CLIENT(vect);
 
             if (cubeScript != null)
             {
-                if (cubeScript.CubeMoveable && !cubeScript._isPanel)
+                if (cubeScript.CubeMoveable && !cubeScript.CubeIsPanel)
                 {
                     cubeScript.CubePlatform = true;
                 }
@@ -121,7 +121,7 @@ public class CubeConnections : MonoBehaviour
         Vector3 cubeHalfLoc = neighbourHalfScript.CubeStaticLocVector;
 
         Vector3 leftVect = new Vector3 (cubeHalfLoc.x, cubeHalfLoc.y - 1, cubeHalfLoc.z);
-        CubeLocationScript cubeScriptLeft = LocationManager.GetLocationScript(leftVect); // underneath panel
+        CubeLocationScript cubeScriptLeft = LocationManager.GetLocationScript_CLIENT(leftVect); // underneath panel
 		if (cubeScriptLeft != null) {
             panelScript.cubeScriptLeft = cubeScriptLeft;
 			panelScript.cubeLeftVector = leftVect;
@@ -133,7 +133,7 @@ public class CubeConnections : MonoBehaviour
 
 
         Vector3 rightVect = new Vector3(cubeHalfLoc.x, cubeHalfLoc.y + 1, cubeHalfLoc.z);
-        CubeLocationScript cubeScriptRight = LocationManager.GetLocationScript(rightVect); // Ontop of panel
+        CubeLocationScript cubeScriptRight = LocationManager.GetLocationScript_CLIENT(rightVect); // Ontop of panel
         if (cubeScriptRight != null)
         {
             panelScript.cubeScriptRight = cubeScriptRight;
@@ -177,7 +177,7 @@ public class CubeConnections : MonoBehaviour
 
 		if (result == 180 || result == -180 || result == 0) { // Down
             Vector3 leftVect = new Vector3 (cubeHalfLoc.x, cubeHalfLoc.y, cubeHalfLoc.z - 1);
-            cubeScriptLeft = LocationManager.GetLocationScript(leftVect);
+            cubeScriptLeft = LocationManager.GetLocationScript_CLIENT(leftVect);
 			if (cubeScriptLeft != null) {
 				panelScript.cubeScriptLeft = cubeScriptLeft;
 				panelScript.cubeLeftVector = leftVect;
@@ -196,7 +196,7 @@ public class CubeConnections : MonoBehaviour
             }
 
             Vector3 rightVect = new Vector3 (cubeHalfLoc.x, cubeHalfLoc.y, cubeHalfLoc.z + 1);
-			cubeScriptRight = LocationManager.GetLocationScript(rightVect);
+			cubeScriptRight = LocationManager.GetLocationScript_CLIENT(rightVect);
 			if (cubeScriptRight != null) {
 				panelScript.cubeScriptRight = cubeScriptRight;
 				panelScript.cubeRightVector = rightVect;
@@ -217,7 +217,7 @@ public class CubeConnections : MonoBehaviour
 		} else if (result == 90 || result == -90) { //across 
 
             Vector3 leftVect = new Vector3 (cubeHalfLoc.x - 1, cubeHalfLoc.y, cubeHalfLoc.z);
-			cubeScriptLeft = LocationManager.GetLocationScript(leftVect);
+			cubeScriptLeft = LocationManager.GetLocationScript_CLIENT(leftVect);
 			if (cubeScriptLeft != null) {
 				panelScript.cubeScriptLeft = cubeScriptLeft;
 				panelScript.cubeLeftVector = leftVect;
@@ -236,7 +236,7 @@ public class CubeConnections : MonoBehaviour
             }
 
             Vector3 rightVect = new Vector3 (cubeHalfLoc.x + 1, cubeHalfLoc.y, cubeHalfLoc.z);
-			cubeScriptRight = LocationManager.GetLocationScript(rightVect);
+			cubeScriptRight = LocationManager.GetLocationScript_CLIENT(rightVect);
 			if (cubeScriptRight != null) {
 				panelScript.cubeScriptRight = cubeScriptRight;
 				panelScript.cubeRightVector = rightVect;
@@ -277,7 +277,7 @@ public class CubeConnections : MonoBehaviour
         Vector3 cubeLoc = cubeScript.CubeStaticLocVector;
 
         Vector3 rightVect = new Vector3(cubeLoc.x, cubeLoc.y + 2, cubeLoc.z); // OnTop ( I think)
-        CubeLocationScript cubeScriptRight = LocationManager.GetLocationScript(rightVect);
+        CubeLocationScript cubeScriptRight = LocationManager.GetLocationScript_CLIENT(rightVect);
         if (cubeScriptRight != null)
         {
             panelScript.cubeScriptRight = cubeScriptRight;
@@ -289,7 +289,7 @@ public class CubeConnections : MonoBehaviour
         }
 
         Vector3 leftVect = new Vector3(cubeLoc.x, cubeLoc.y - 2, cubeLoc.z); // Underneath ( I think)
-        CubeLocationScript cubeScriptLeft = LocationManager.GetLocationScript(leftVect);
+        CubeLocationScript cubeScriptLeft = LocationManager.GetLocationScript_CLIENT(leftVect);
 
         if (cubeScriptLeft != null)
         {
@@ -325,8 +325,8 @@ public class CubeConnections : MonoBehaviour
 
         Vector3 TopHalfVect = new Vector3(cubeLoc.x, cubeLoc.y + 1, cubeLoc.z);
         Vector3 bottomHalfVect = new Vector3(cubeLoc.x, cubeLoc.y - 1, cubeLoc.z);
-        CubeLocationScript cubeScriptHalfTop = LocationManager.GetHalfLocationScript(TopHalfVect); // ontop panel
-        CubeLocationScript cubeScriptHalfBottom = LocationManager.GetHalfLocationScript(bottomHalfVect); // underneath panel
+        CubeLocationScript cubeScriptHalfTop = LocationManager.GetHalfLocationScript_CLIENT(TopHalfVect); // ontop panel
+        CubeLocationScript cubeScriptHalfBottom = LocationManager.GetHalfLocationScript_CLIENT(bottomHalfVect); // underneath panel
 
         if (cubeScriptHalfBottom != null) // ontop
         {

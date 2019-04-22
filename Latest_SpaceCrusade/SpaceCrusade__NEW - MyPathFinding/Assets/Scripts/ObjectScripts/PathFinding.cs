@@ -9,7 +9,7 @@ public class PathFinding : MonoBehaviour
 
     ////////////////////////////////////////////////
 
-    public static bool _debugPathfindingNodes = false;
+    public static bool _debugPathfindingNodes = true;
 
     ////////////////////////////////////////////////
 
@@ -41,8 +41,8 @@ public class PathFinding : MonoBehaviour
 
         ResetPath();
 
-        CubeLocationScript cubeStartScript = LocationManager.GetLocationScript(startVect);
-		CubeLocationScript cubeTargetScript = LocationManager.GetLocationScript(targetVect);
+        CubeLocationScript cubeStartScript = LocationManager.GetLocationScript_CLIENT(startVect);
+		CubeLocationScript cubeTargetScript = LocationManager.GetLocationScript_CLIENT(targetVect);
 
         List<CubeLocationScript> openSet = new List<CubeLocationScript>();
 		openSet.Clear ();
@@ -70,37 +70,48 @@ public class PathFinding : MonoBehaviour
 
             List<Vector3> neighVects = node.NeighbourVects;
 
-            foreach (Vector3 vect in neighVects) {
+            foreach (Vector3 vect in neighVects)
+            {
 
-                // personal checks
-                if (LocationManager.CheckIfCanMoveToCube(unit, node, vect) == null)
+                //if (vect != targetVect)
+                //{
+                    // personal checks
+                    if (LocationManager.CheckIfCanMoveToCube_CLIENT(node, vect, unit.UnitCanClimbWalls) == null)
+                    {
+                        continue;
+                    }
+                //}
+
+                CubeLocationScript neightbourScript = LocationManager.GetLocationScript_CLIENT(vect);
+
+                if (closedSet.Contains(neightbourScript))
                 {
                     continue;
                 }
 
-                CubeLocationScript neightbourScript = LocationManager.GetLocationScript(vect);
-
-                if (closedSet.Contains (neightbourScript)) {
-                    continue;
-				}
-
                 if (_debugPathfindingNodes)
                 {
-                    neightbourScript.CreatePathFindingNode(unit.PlayerControllerID);
+                    neightbourScript.CreatePathFindingNodeInCube(unit.PlayerControllerID);
                 }
 
                 _previousNodes.Add(neightbourScript);
 
-                int newCostToNeighbour = node.gCost + GetDistance (node, neightbourScript);
-				if (newCostToNeighbour < neightbourScript.gCost || !openSet.Contains (neightbourScript)) {
-					neightbourScript.gCost = newCostToNeighbour;
-					neightbourScript.hCost = GetDistance (neightbourScript, cubeTargetScript);
-					neightbourScript._parentPathFinding = node;
+                int newCostToNeighbour = node.gCost + GetDistance(node, neightbourScript);
+                if (newCostToNeighbour < neightbourScript.gCost || !openSet.Contains(neightbourScript))
+                {
+                    neightbourScript.gCost = newCostToNeighbour;
+                    neightbourScript.hCost = GetDistance(neightbourScript, cubeTargetScript);
+                    neightbourScript._parentPathFinding = node;
 
-					if (!openSet.Contains (neightbourScript))
-						openSet.Add (neightbourScript);
-				}
-			}
+                    if (!openSet.Contains(neightbourScript))
+                        openSet.Add(neightbourScript);
+                }
+
+                //if (vect == targetVect)
+                //{
+                //    break;
+                //}
+            }
 		} 
 		Debug.Log ("SHIT NO WAY OF GETTING TO THAT SPOT!");
 		return null;

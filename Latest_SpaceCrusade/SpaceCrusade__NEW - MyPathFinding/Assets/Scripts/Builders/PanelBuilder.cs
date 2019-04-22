@@ -157,14 +157,14 @@ public class PanelBuilder : MonoBehaviour
 
 			break;
 		case "FloorAngle":
-            cubeScript._isSlope = true;
+            cubeScript.CubeIsSlope = true;
 			panelObject.transform.localPosition = new Vector3 (0, 0, 0);
 			panelObject.transform.localEulerAngles = new Vector3 (-135, angle, 0);
 			panelObject.transform.localScale = new Vector3 (20, 30, 1);
 			panelObject.transform.tag = ("Panel_FloorAngle");
 			break;
 		case "CeilingAngle":
-            cubeScript._isSlope = true;
+            cubeScript.CubeIsSlope = true;
 			panelObject.transform.localPosition = new Vector3 (0, 0, 0);
 			panelObject.transform.localEulerAngles = new Vector3 (135, angle, 0);
 			panelObject.transform.localScale = new Vector3 (20, 30, 1);
@@ -175,6 +175,8 @@ public class PanelBuilder : MonoBehaviour
 			break;
 		}
 		panelScript.panelAngle = angle;
-	}
+        cubeScript.PanelChildAngle = angle;
+
+    }
 
 }

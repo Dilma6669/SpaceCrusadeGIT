@@ -194,7 +194,7 @@ public class WorldNodeBuilder : MonoBehaviour
             LayerManager.AddNodeToLayer(nodeScript); // for camera layers
 
             // for the dynamic grid experiment
-            LocationManager.SetNodeScriptToLocation(vect, nodeScript);
+            LocationManager.SetNodeScriptToLocation_SERVER(vect, nodeScript);
 
             count++;
         }

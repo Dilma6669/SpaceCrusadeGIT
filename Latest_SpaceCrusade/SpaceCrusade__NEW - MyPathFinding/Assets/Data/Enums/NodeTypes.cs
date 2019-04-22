@@ -7,6 +7,7 @@ public enum NodeTypes
     MapNode,
     ConnectorNode,
     OuterNode,
+    PathFindingNode,
     DockingNode
 }
 

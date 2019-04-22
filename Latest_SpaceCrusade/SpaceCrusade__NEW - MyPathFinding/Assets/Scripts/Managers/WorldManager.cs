@@ -31,8 +31,8 @@ public class WorldManager : MonoBehaviour {
 
     void Start()
     {
-        _GridContainer = GameObject.Find("GridContainer");
-        _WorldContainer = GameObject.Find("WorldContainer");
+        _GridContainer = transform.Find("GridContainer").gameObject;
+        _WorldContainer = transform.Find("WorldContainer").gameObject;
     }
 
     ////////////////////////////////////////////////
@@ -41,6 +41,7 @@ public class WorldManager : MonoBehaviour {
     public static void BuildWorldForClient()
     {
         SyncedVars _syncedVars = GameObject.Find("SyncedVars").GetComponent<SyncedVars>(); // needs to be here, function runs before awake
+        if (_syncedVars == null) { Debug.LogError("We got a problem here"); }
 
         int GlobalSeed = _syncedVars.GlobalSeed;
         Random.InitState(GlobalSeed);

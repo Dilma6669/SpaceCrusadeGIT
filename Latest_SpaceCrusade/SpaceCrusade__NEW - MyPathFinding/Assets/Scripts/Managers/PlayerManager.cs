@@ -96,6 +96,7 @@ public class PlayerManager : MonoBehaviour
     public static void SetUpPlayer()
     {
         SyncedVars _syncedVars = GameObject.Find("SyncedVars").GetComponent<SyncedVars>(); // needs to be here, function runs before awake
+        if (_syncedVars == null) { Debug.LogError("We got a problem here"); }
 
         PlayerID = _syncedVars.PlayerCount;
         LoadPlayerDataInToManager(PlayerID);

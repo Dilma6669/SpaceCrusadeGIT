@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4661308, g: 0.46583003, b: 0.4619276, a: 1}
+  m_IndirectSpecularColor: {r: 0.4660946, g: 0.465792, b: 0.46188998, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2632,6 +2632,8 @@ MonoBehaviour:
   _mapNodePrefab: {fileID: 1388036142563308, guid: 9df70b271db67294fb8881eeb5539a97,
     type: 3}
   _connectorNodePrefab: {fileID: 1955432028190872, guid: 5809a09b61572bd4fb82b7dc5fdcfae4,
+    type: 3}
+  _pathFindingPrefab: {fileID: 1965883560703006, guid: d3bfd96356f2f0c4fa8f7cbe953ef5fb,
     type: 3}
   _normalCoverPrefab: {fileID: 1474394807116960, guid: c0d185681c463174ba72d229cdf8cfe4,
     type: 3}

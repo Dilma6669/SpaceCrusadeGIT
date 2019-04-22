@@ -69,9 +69,10 @@ public class CameraManager : MonoBehaviour
         return PlayerManager.GetPlayerStartPosition(playerID);
     }
 
-    public static void SetCamToOrbitUnit(Transform unit)
+    public static void SetCamToOrbitUnit(UnitScript unitScript)
     {
-        Camera_Agent.SetCamToOrbitUnit(unit);
+        //print("fuck SetCamToOrbitUnit unit " + unitScript.NetID.Value);
+        Camera_Agent.SetCamAgentToOrbitUnit(unitScript);
     }
 
 }
