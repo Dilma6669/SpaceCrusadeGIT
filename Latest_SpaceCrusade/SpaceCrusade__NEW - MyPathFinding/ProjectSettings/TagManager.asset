@@ -16,6 +16,7 @@ TagManager:
   - CubeFWall
   - CubeGWall
   - CubeCWall
+  - NetworkNodeContainer
   layers:
   - Default
   - TransparentFX

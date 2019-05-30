@@ -1,10 +1,12 @@
 Win64
 PlayerPath?
-D:/Made Games/MultiplayerGIT/SpaceCrusade__NEW - MyPathFinding/Builds/GRID_SYSTEM.exe
+D:/Made Games/SpaceCrusadeGIT_NEWEST/Latest_SpaceCrusade/SpaceCrusade__NEW - MyPathFinding/Builds/GRID_SYSTEM.exe
 SceneListBegin?
-Assets/Scenes/SampleScene.unity
-Assets/Scenes/MutliplayScreen.unity
+Assets/Shared/Scenes/MultiPlayerScene_0.unity
+Assets/Shared/Scenes/MutliplayScreen.unity
+Assets/Shared/Scenes/SinglePlayerScene_0.unity
 SceneListEnd?
+61d6d11de755da39d51944f17a206847 Assembly-CSharp.dll:.NetworkNodeContainer
 984dcc0ba3707b7691fbdca8ff508d28 Unity.TextMeshPro.dll:TMPro.TMP_SelectionCaret
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.GridBuilder
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.CombatManager
@@ -98,7 +100,7 @@ fc108ce7d98c40ac0907e8ca7f500c76 UnityEngine.UI.dll:UnityEngine.UI.Text
 0fd6822f6177297bd0eb4d83cc7a9030 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 abf1930d8126d0b2e00e9449129a0190 UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 64e54c0cbb0177c5ea26f340efb9ff85 UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
-71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.MovementScript
+62e9fde4730fe70fd40c6e4cbbc25104 Assembly-CSharp.dll:.MovementScript
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.ShipPort_Grnd_Empty_01
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.MapPiece_Vents_Up_01
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.CubeLocationBase
@@ -148,7 +150,7 @@ f9a8e76ddf265a28f956cba2914ba548 Assembly-CSharp.dll:.ConnectorNode
 b3ab2106268377ffe25dd18ac23dca28 Unity.TextMeshPro.dll:TMPro.TMP_Asset
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.PathFindingNode
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.ShipPort_Wall_Vents_01
-967451e4d3cfb855727c678c929aaff4 Assembly-CSharp.dll:.NodeBuilder
+ece1ca2fbf2443ed5bbdd633ea1bcf38 Assembly-CSharp.dll:.NodeBuilder
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.PanelBuilder
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.MapSettings
 3753d9c02e68ad3fffd0f2bf8bbe1ed6 Assembly-CSharp.dll:.SyncedVars
@@ -208,7 +210,7 @@ fb6a1ea36b4f6ef5948d283d93760765 UnityEngine.GoogleAudioSpatializer.dll:UnityEng
 a4f0a4f62100f1a4fb5cbe0e00dde83f Unity.TextMeshPro.dll:TMPro.TextMeshProUGUI
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.ShipPort_Mid_Wall_01
 5fc094978ce3e3591a7500ed380d854a Unity.Analytics.DataPrivacy.dll:UnityEngine.Analytics.DataPrivacyButton
-13a4f20475d70ce9e48dfc7ecce93727 Assembly-CSharp.dll:.CameraPivot
+e1f9f88690453928ca61daf9727e12d0 Assembly-CSharp.dll:.CameraPivot
 d251bf88db6c95a6b1aa0b69298da9ef UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.WorldNodeData_01
 f9a8e76ddf265a28f956cba2914ba548 Assembly-CSharp.dll:.MapNode
@@ -230,3 +232,4 @@ f9a8e76ddf265a28f956cba2914ba548 Assembly-CSharp.dll:.BaseNode
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.MapPiece_Corridor_03
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.ConnectorPiece_01
 71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.CubeBuilder
+71bb6a6b6c8f052f948db64c7dd3ca4f Assembly-CSharp.dll:.SceneLoader
